@@ -59,19 +59,16 @@ public class ClientTest {
         first.addDeposit(new LongDeposit(new BigDecimal(100), 8));
         first.addDeposit(new BaseDeposit(new BigDecimal(200), 4));
         first.addDeposit(new SpecialDeposit(new BigDecimal(10000), 4));
-        Assert.assertEquals(first.countPossibleToProlongDeposit(), 3);
+        Assert.assertEquals(first.countPossibleToProlongDeposit(), 2);
     }
 
     @Test
     public void test6(){
         Client first = new Client();
-        first.addDeposit(new LongDeposit(new BigDecimal(100), 8));
-        first.addDeposit(new BaseDeposit(new BigDecimal(200), 4));
-        first.addDeposit(new SpecialDeposit(new BigDecimal(10000), 4));
-        ArrayList depositsIncome = new ArrayList();
-        depositsIncome.add(new BigDecimal(1035.50).setScale(2, RoundingMode.HALF_EVEN));
-        depositsIncome.add(new BigDecimal(43.10).setScale(2, RoundingMode.HALF_EVEN));
-        depositsIncome.add(new BigDecimal(32.25).setScale(2, RoundingMode.HALF_EVEN));
-        Assert.assertEquals(first.sortDeposits(), depositsIncome);
+        first.addDeposit(new BaseDeposit(new BigDecimal(4000), 2));
+        first.addDeposit(new LongDeposit(new BigDecimal(300), 10));
+        first.addDeposit(new SpecialDeposit(new BigDecimal(200), 15));
+        first.sortDeposits();
+        Assert.assertEquals(first.getIncomeByNumber(2), new BigDecimal(224.68).setScale(2, RoundingMode.HALF_EVEN));
     }
 }

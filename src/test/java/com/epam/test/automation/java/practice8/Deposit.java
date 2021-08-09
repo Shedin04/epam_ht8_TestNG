@@ -24,6 +24,15 @@ public abstract class Deposit implements Comparable<Deposit>,Prolongable {
         return period;
     }
 
+    @Override
+    public String toString() {
+        return "Deposit{" +
+                "amount=" + amount +
+                ", income=" + income() +
+                ", period=" + period +
+                '}';
+    }
+
     public abstract BigDecimal income();
 
     @Override

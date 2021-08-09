@@ -8,7 +8,7 @@ import java.util.*;
  * Implement class according to description of task.
  * </summary>
  */
-public class Client implements Iterable<Deposit> {
+public class Client implements Iterable<Deposit>{
     private final Deposit[] deposits;
     private int num = 0;
     private int index = 0;
@@ -40,7 +40,7 @@ public class Client implements Iterable<Deposit> {
         for (int i = 0; i < deposits.length; i++) {
             if (deposits[i] != null) total = total.add(deposits[i].income());
         }
-        return total.subtract(BigDecimal.valueOf(0.02));
+        return total;
     }
 
     public BigDecimal maxIncome() {
@@ -50,47 +50,44 @@ public class Client implements Iterable<Deposit> {
                 max = deposits[i].income();
             }
         }
-        return max.subtract(BigDecimal.valueOf(0.02));
+        return max;
     }
 
     public BigDecimal getIncomeByNumber(int number) {
         if (deposits[number] == null) return BigDecimal.valueOf(0);
         else {
-            return deposits[number].income().subtract(BigDecimal.valueOf(0.02));
+            return deposits[number].income();
         }
     }
 
     @Override
     public Iterator<Deposit> iterator() {
-       return new Iterator<>() {
+        return new Iterator<>() {
             @Override
             public boolean hasNext() {
-                if (deposits[index]!= null) {return index<deposits.length;}
-                else {return false;}
+                return index < deposits.length && deposits[index] != null;
             }
 
             @Override
             public Deposit next() {
-                if (deposits[index] == null) throw new NoSuchElementException();
-                return deposits[index++];
+                if (index >= deposits.length) throw new NoSuchElementException();
+                else return deposits[index++];
             }
         };
     }
 
-   public List sortDeposits(){
-       List depositsIncome = new ArrayList();
-
-       while (iterator().hasNext()){
-           depositsIncome.add(iterator().next().income());
-        }
-
-       Collections.sort(depositsIncome, Collections.reverseOrder());
-       return depositsIncome;
+    public Deposit[] sortDeposits() {
+        Arrays.sort(deposits, (o1, o2) -> {
+            if (o1 != null && o2!=null)
+            { return o2.amount.add(o2.income()).compareTo(o1.amount.add(o1.income())); }
+            else  {return (o1 == null) ? 1 : -1; }
+        });
+        return deposits;
     }
 
-    public int countPossibleToProlongDeposit(){
-        for (int i=0; i<deposits.length; i++) {
-            if (deposits[i]!= null && deposits[i].canToProlong()) count++;
+    public int countPossibleToProlongDeposit() {
+        for (int i = 0; i < deposits.length; i++) {
+            if (deposits[i] != null && deposits[i].canToProlong()) count++;
         }
         return count;
     }
